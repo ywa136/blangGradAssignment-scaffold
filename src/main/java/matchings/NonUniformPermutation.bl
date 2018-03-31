@@ -3,15 +3,18 @@ package matchings
 /**
  * The uniform distribution over permutations. 
  */
-model UniformPermutation {
+model NonUniformPermutation {
   random Permutation permutation 
+  param RealVar variance ?: {1.0}
   
   laws {
-    logf(permutation) {
+    logf(permutation, variance) {
       - logFactorial(permutation.componentSize)*permutation.getConnections().get(0)
     }
   }
-  generate(rand) {
-    permutation.sampleUniform(rand)
+  
+  generate(rand){
+  	
   }
+  
 }
