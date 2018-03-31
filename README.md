@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ywa136/blangGradAssignment-scaffold.png?branch=master)](https://travis-ci.org/ywa136/blangGradAssignment-scaffold)
+
 # Assignment on Blang
 
 ## Prerequisites
