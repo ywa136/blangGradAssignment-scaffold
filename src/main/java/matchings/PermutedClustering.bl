@@ -17,5 +17,32 @@ model PermutedClustering {
   
   laws {
     // Fill this. 
-  }
+    means.get(0) ~ ContinuousUniform(0.0,1.0)
+    variances.get(0) ~ Exponential(10.0)
+    for (int i : 1 ..< groupSize) {
+    		means.get(i) | RealVar previous = means.get(i-1) ~ ContinuousUniform(previous,1.0+previous)
+    		variances.get(i) ~ Exponential(10.0)
+    }
+    
+    // prior over permutations
+    	for (Permutation permutation : permutations){
+//	     logf(permutation) {
+//      		- logFactorial(permutation.componentSize)
+//    		 }   
+		permutation ~ UniformPermutation     
+	}
+ 
+	for (int rowIdx : 0 ..< nGroups) {
+		for (int Idx : 0 ..< groupSize){
+	      // likelihood
+	      observations.getRealVar(rowIdx,Idx) |
+	        means, variances,
+	        IntVar ind = permutations.get(rowIdx).getConnections().get(Idx)      
+	        ~ Normal(
+	          means.get(ind),
+	          variances.get(ind) 
+	        )
+	    }
+	} 
+  } 
 }
