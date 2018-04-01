@@ -1,0 +1,4 @@
+scriptName: permuted-clustering.nf
+start: Sat Mar 31 17:14:11 PDT 2018
+runName: pensive_heyrovsky
+nextflow.version: 0.28.0
