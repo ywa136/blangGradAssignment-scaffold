@@ -31,5 +31,5 @@
 
 Here we attach the posterior probability plot for the fitted model:
 
-![](permutations-posterior.pdf)
+![](https://github.com/ywa136/blangGradAssignment-scaffold/edit/master/permutations-posterior.pdf)
  
