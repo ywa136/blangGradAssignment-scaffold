@@ -25,10 +25,7 @@ model PermutedClustering {
     }
     
     // prior over permutations
-    	for (Permutation permutation : permutations){
-//	     logf(permutation) {
-//      		- logFactorial(permutation.componentSize)
-//    		 }   
+    	for (Permutation permutation : permutations){ 
 		permutation ~ UniformPermutation     
 	}
  

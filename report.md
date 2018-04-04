@@ -29,7 +29,5 @@
 
 ## PermutedClustering
 
-Here we attach the posterior probability plot for the fitted model:
-
-![](permutations-posterior.pdf)
+Here we attach the posterior probability [plot](https://github.com/ywa136/blangGradAssignment-scaffold/blob/master/permutations-posterior.pdf) for the fitted model.
  

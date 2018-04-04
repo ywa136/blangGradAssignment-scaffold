@@ -1,4 +1,4 @@
 scriptName: permuted-clustering.nf
-start: Sat Mar 31 17:14:11 PDT 2018
-runName: pensive_heyrovsky
+start: Sun Apr 01 16:26:25 PDT 2018
+runName: infallible_faggin
 nextflow.version: 0.28.0
