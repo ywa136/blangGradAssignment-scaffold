@@ -12,7 +12,7 @@
 	* Compute the normalized target distribution.
 	* For each kernel used in the sampler compute the empirical transition matrices by calculating the probabilities of the transition process among all possible state.
 
-5. Check invariance of each transition kernel by multiplying the target and the transition and see if the same matrix is outputed. 
+5. Check invariance of each transition kernel by multiplying the target and the transition and see if the same matrix is outputed. Here we test invariance for each kernel seperately and as a result, the mixture of them will be invariant to the target distribution in theory. We do not test with the mixture directly since if the test fails we are not able to track down the individual kernel(s) who failed the invariance test.
 	
 6. Check the irreducibility of the mixture of kernels: first mix uniformly all kernels with an identity matrix; then starting at an arbitrary state and cheking whether the chain is able to reach all possible states within number of steps equal the size of the state space. We often need more that one update mechanism for the same target to obtain a new update mechanism that preserves the specified target distribution but satisfies irreducibility. It is clear that mixing of several kernels (i.e., update mechnisams) preserves the specified distribution, because no matter which individual kernel is chosen the target distribution is preserved. 	
 
