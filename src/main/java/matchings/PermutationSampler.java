@@ -31,86 +31,22 @@ public class PermutationSampler implements Sampler {
 
   @Override
   public void execute(Random rand) {
-    // Fill this.  
-//	    
-//	  System.out.println("previous state");
-//	  System.out.println("-----------------------------------------------");
-//	  double currentDensity = logDensity();
-//    List<Integer> currentConnections = permutation.getConnections();
-//    
-//    ArrayList<Integer> nextState = new ArrayList<Integer>(currentConnections);
-//	  System.out.println(nextState);
-//      
-//	  System.out.println(currentDensity);
-//		 permutation.sampleUniform(rand);
-//		 System.out.println("current state");
-//		 System.out.println("-----------------------------------------------"); 
-//		 double newDensity = logDensity();
-//
-//		 System.out.println(permutation.getConnections());
-//		 System.out.println(newDensity); 
-	  
-//	  permutation.getConnections();
-	        
-	  	  
-	  //	  System.out.println("Current -------------------------------------");
-	  //	  double[] probabilities = {0.1,0.1,0.8};
-	  	  
-	  //	  long n = (long)rand.nextCategorical(probabilities) + 1;
-	  //	  Random curRandom = new Random(n);
-	  //	  permutation.sampleUniform(curRandom);
-//	  System.out.println("Current -------------------------------------");
-//	        List<Integer> currentConnections = permutation.getConnections();
-//	        System.out.println(currentConnections);
-//	        ArrayList<Integer> deepCurrentConnections = new ArrayList<Integer>(currentConnections);
-//	        double currentDensity = logDensity();
-//	        
-//	        permutation.sampleUniform(rand);
-//	        List<Integer> newConnections = permutation.getConnections();
-//	        
-//	  	  double newDensity = logDensity();
-////	  	  System.out.println("deepCurrent -------------------------------------");
-////	  	  System.out.println(deepCurrentConnections);
-//	  	  System.out.println("newConnections -------------------------------------");
-//	  	  System.out.println(newConnections);
-//	  	  double alpha = Math.min(1, Math.exp(newDensity)/Math.exp(currentDensity));
-//	  	  //double alpha = Math.min(1, (newDensity)/(currentDensity));
-//	  	 //Random currand = new Random();
-//	  	  boolean u = rand.nextBernoulli(alpha);
-//	  	  System.out.println("Alpha is");
-//	  	  System.out.println(alpha);
-//	  	  System.out.println("u is");
-//	  	  System.out.println(u);
-//  	  
-//		  if (u) {
-//		 		 // permutation.setConnections(permutation.getConnection);
-//		 		  for (int i = 0; i < newConnections.size(); i ++ ) {
-//					  deepCurrentConnections.set(i, newConnections.get(i));
-//					  permutation.getConnections().set(i, newConnections.get(i));
-//		 			
-//		 		  }
-//				  System.out.println("The new sampled one is");
-//				  System.out.println("We decide to pick the new one");
-//		 		  System.out.println(permutation.getConnections());
-//			  } else {
-//				  for (int i = 0; i < deepCurrentConnections.size(); i ++ ) {
-//					  permutation.getConnections().set(i, deepCurrentConnections.get(i));
-//					
-//				  }
-//				  System.out.println("We decide to stick with the old one");
-//				  System.out.println(permutation.getConnections());
-//		 	  }
-	  List<Integer> conBefore = permutation.getConnections();
-      final double logBefore = logDensity();
-      ArrayList<Integer> deepconBefore = new ArrayList<Integer>(conBefore);
-      permutation.sampleUniform(rand);
-//      List<Integer> conAfter = permutation.getConnections();
-	  final double logAfter = logDensity();
-	  final double ratio = Math.exp(logAfter - logBefore);
+
+	  // Obtain the current connected vertices.
+	  List<Integer> currentState = permutation.getConnections();
+      double currentLogDensity = logDensity();
+      ArrayList<Integer> deepcurrentState = new ArrayList<Integer>(currentState);
+      
+      // The algorithm randomly select a pair of vertices each time and swap their connections.
+      UnorderedPair<Integer,Integer> SwapPairs = Generators.distinctPair(rand,currentState.size());
+      Collections.swap(permutation.getConnections(), SwapPairs.getFirst(), SwapPairs.getSecond());
+      
+	  double nextLogDensity = logDensity();
+	  double ratio = Math.exp(nextLogDensity - currentLogDensity);
 	  boolean u = Generators.bernoulli(rand, Math.min(1.0, ratio));
 	  if(!u) {
-		  for (int i = 0; i < deepconBefore.size(); i ++ ) {
-			  permutation.getConnections().set(i, deepconBefore.get(i));
+		  for (int i = 0; i < deepcurrentState.size(); i ++ ) {
+			  permutation.getConnections().set(i, deepcurrentState.get(i));
 		  }
 	  }
     

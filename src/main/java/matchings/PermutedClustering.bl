@@ -16,7 +16,7 @@ model PermutedClustering {
   random Matrix observations ?: latentMatrix(nGroups, groupSize)
   
   laws {
-    // Fill this. 
+    // Prior over means and variances 
     means.get(0) ~ ContinuousUniform(0.0,1.0)
     variances.get(0) ~ Exponential(10.0)
     for (int i : 1 ..< groupSize) {
@@ -28,10 +28,10 @@ model PermutedClustering {
     	for (Permutation permutation : permutations){ 
 		permutation ~ UniformPermutation     
 	}
- 
+    
+    // likelihood
 	for (int rowIdx : 0 ..< nGroups) {
 		for (int Idx : 0 ..< groupSize){
-	      // likelihood
 	      observations.getRealVar(rowIdx,Idx) |
 	        means, variances,
 	        IntVar ind = permutations.get(rowIdx).getConnections().get(Idx)      

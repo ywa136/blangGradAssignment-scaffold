@@ -36,12 +36,7 @@ public class BipartiteMatchingSampler implements Sampler {
    * resampled. 
    */
   @ConnectedFactor List<LogScaleFactor> numericFactors;
-  public static final int SWAP = 0;
-  public static final int DEL = 1;
-  public static final int ADD = 2;
   
-//  int newSize;
-//  double[] chooseSizeProbabilities = new double[5];
   @Override
   public void execute(Random rand) {
     // Fill this. 
@@ -260,29 +255,35 @@ public class BipartiteMatchingSampler implements Sampler {
 ////			} 
 ////			// System.out.println("Next state is: \n \n \n" + permutation.getConnections()); 
 ////		} 
-		  List<Integer> conBefore = matching.getConnections();
-	      final double logBefore = logDensity();
-	      ArrayList<Integer> deepconBefore = new ArrayList<Integer>(conBefore);
+	  
+	  
+	      // The algorithm randomly select one vertex each time, and replace it with another vertex that has 
+	      // currently not been occupied or FREE it if it is not free already.
+		  List<Integer> currentState = matching.getConnections();
+	      final double currentLogDensity = logDensity();
+	      ArrayList<Integer> deepcurrentState = new ArrayList<Integer>(currentState);
 	      int idx = rand.nextInt(matching.componentSize());
-	      ArrayList<Integer> Leftover = new ArrayList<Integer>();
+	      
+	      // Create a list containing vertices that have not been occupied
+	      ArrayList<Integer> LeftOver = new ArrayList<Integer>();
   	  	  for (int i = 0; i < matching.getConnections().size(); i ++) {
 	  		if (! matching.getConnections().contains(i)) {
-	  			Leftover.add(i);
+	  			LeftOver.add(i);
 	  		}
 	  	  }	  
-  	  	  if (matching.getConnections().get(idx)!=-1) {Leftover.add(-1);}
-  	  	  
-//	      Leftover.add(conBefore.get(idx));
+  	  	  // If the current selected vertex is not free, add a free option to the 
+  	  	  // left over list.
+  	  	  if (matching.getConnections().get(idx)!=-1) {LeftOver.add(-1);}
 
-	      int idxleftover = rand.nextInt(Leftover.size());
+	      int idxleftover = rand.nextInt(LeftOver.size());
 	      
-	      matching.getConnections().set(idx, Leftover.get(idxleftover));  
-		  final double logAfter = logDensity();
-		  final double ratio = Math.exp(logAfter - logBefore);
+	      matching.getConnections().set(idx, LeftOver.get(idxleftover));  
+		  final double nextLogDensity = logDensity();
+		  final double ratio = Math.exp(nextLogDensity - currentLogDensity);
 		  boolean u = Generators.bernoulli(rand, Math.min(1.0, ratio));
 		  if(!u) {
-			  for (int i = 0; i < deepconBefore.size(); i ++ ) {
-				  matching.getConnections().set(i, deepconBefore.get(i));
+			  for (int i = 0; i < deepcurrentState.size(); i ++ ) {
+				  matching.getConnections().set(i, deepcurrentState.get(i));
 			  }
 		  }
 
